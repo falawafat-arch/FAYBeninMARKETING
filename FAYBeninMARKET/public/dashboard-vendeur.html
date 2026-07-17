@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAY-BeninMARKET | Espace Vendeur</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0b4ea2;
+            --primary-hover: #083b7c;
+            --secondary: #2ecc71;
+            --danger: #e74c3c;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        /* ÉCRAN DE CONNEXION */
+        .auth-container {
+            max-width: 450px;
+            margin: 80px auto;
+            padding: 40px;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .auth-logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 30px;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .auth-logo span {
+            color: var(--secondary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(11, 78, 162, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* TABLEAU DE BORD (Masqué par défaut) */
+        .dashboard {
+            display: none; /* Contrôlé par le JS d'authentification */
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .btn-logout {
+            background-color: var(--danger);
+            color: var(--white);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dash-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .dash-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* LISTE DES PRODUITS AJOUTÉS */
+        .product-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .product-info h4 {
+            font-weight: 600;
+        }
+
+        .product-info span {
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .btn-delete {
+            background: none;
+            border: none;
+            color: var(--danger);
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-delete:hover {
+            transform: scale(1.1);
+        }
+    </style>
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b4ea2">
+</head>
+<body>
+
+    <!-- SECTION CONNEXION -->
+    <div id="auth-section" class="auth-container">
+        <a href="index.html" class="auth-logo"><i class="fas fa-shopping-bag"></i> FAY-Benin<span>MARKET</span></a>
+        <h3 style="margin-bottom: 20px;">Connexion Partenaire</h3>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="login-email">Adresse e-mail</label>
+                <input type="email" id="login-email" placeholder="vendeur@faymarket.com" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Mot de passe</label>
+                <input type="password" id="login-password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-submit">Se connecter</button>
+        </form>
+    </div>
+
+    <!-- SECTION TABLEAU DE BORD -->
+    <div id="dashboard-section" class="dashboard">
+        <div class="dash-header">
+            <h2>Espace Vendeur | <span style="color: var(--primary);">Mon Magasin</span></h2>
+            <button id="btn-deconnexion" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+        </div>
+
+        <div class="dash-grid">
+            <!-- Formulaire d'ajout -->
+            <div class="card">
+                <h3 class="card-title"><i class="fas fa-plus-circle"></i> Ajouter un article</h3>
+                <form id="add-product-form">
+                    <div class="form-group">
+                        <label for="prod-name">Nom de l'article</label>
+                        <input type="text" id="prod-name" placeholder="Ex: Panier d'Atchiké frais" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prod-price">Prix (FCFA)</label>
+                        <input type="number" id="prod-price" placeholder="Ex: 1500" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prod-category">Catégorie</label>
+                        <select id="prod-category" required>
+                            <option value="">-- Choisir une catégorie --</option>
+                            <option value="alimentations & vivres">alimentations & vivres</option>
+                            <option value="habillements & modes">habillements & modes</option>
+                            <option value="technologie">technologie</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                    <!-- CHANGEMENT ICI : Un sélecteur de fichier au lieu d'un champ d'URL texte -->
+                    <div class="form-group">
+                        <label for="prod-image-file">Image de l'article</label>
+                        <input type="file" id="prod-image-file" accept="image/*" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="prod-desc">Description</label>
+                        <textarea id="prod-desc" rows="3" placeholder="Décrivez votre produit..." required></textarea>
+                    </div>
+                    <!-- Numéro de contact WhatsApp pour les commandes -->
+                    <div class="form-group">
+                        <label for="prod-whatsapp">Numéro WhatsApp (avec indicatif ex: 229XXXXXXXX)</label>
+                        <input type="text" id="prod-whatsapp" placeholder="Ex: 22960000000" required>
+                    </div>
+                    <button type="submit" id="btn-publier" class="btn-submit"><i class="fas fa-check"></i> Publier l'article</button>
+                </form>
+            </div>
+
+            <!-- Liste des produits du vendeur -->
+            <div class="card">
+                <h3 class="card-title"><i class="fas fa-box"></i> Mes articles en ligne</h3>
+                <div class="product-list" id="vendeur-products-container">
+                    <!-- Les produits ajoutés apparaîtront ici dynamiquement -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SDK Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    
+    <script>
+        // 1. Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBgxEKac2BFnGp1zz8Df3yKhW656vepF_k",
+            authDomain: "fay-beninmarket.firebaseapp.com",
+            databaseURL: "https://fay-beninmarket-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "fay-beninmarket",
+            storageBucket: "fay-beninmarket.firebasestorage.app",
+            messagingSenderId: "1015486006380",
+            appId: "1:1015486006380:web:9a611b70b258933a848449"
+        };
+
+        // Initialisation de Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const auth = firebase.auth();
+
+        // Clé API ImgBB configurée
+        const IMGBB_API_KEY = "d66ae954235f834082cc6365a1a76a60";
+
+        // Éléments du DOM
+        const authSection = document.getElementById('auth-section');
+        const dashboardSection = document.getElementById('dashboard-section');
+        const loginForm = document.getElementById('login-form');
+        const addProductForm = document.getElementById('add-product-form');
+        const btnDeconnexion = document.getElementById('btn-deconnexion');
+        const btnPublier = document.getElementById('btn-publier');
+        const productsContainer = document.getElementById('vendeur-products-container');
+
+        // 2. Gestion de l'état de connexion
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                authSection.style.display = 'none';
+                dashboardSection.style.display = 'block';
+                chargerProduitsVendeur();
+            } else {
+                authSection.style.display = 'block';
+                dashboardSection.style.display = 'none';
+                productsContainer.innerHTML = '';
+            }
+        });
+
+        // Connexion
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    alert("Ravi de vous revoir ! Connexion réussie.");
+                })
+                .catch((error) => {
+                    alert("Erreur de connexion : " + error.message);
+                });
+        });
+
+        // Déconnexion
+        btnDeconnexion.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                alert("Vous avez été déconnecté.");
+            });
+        });
+
+        // 3. Logique d'ajout d'article avec téléversement ImgBB
+        addProductForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Récupérer le fichier image
+            const fileInput = document.getElementById('prod-image-file');
+            const imageFile = fileInput.files[0];
+
+            if (!imageFile) {
+                alert("Veuillez sélectionner une image pour votre produit.");
+                return;
+            }
+
+            // Désactivation du bouton pour éviter les doubles clics
+            btnPublier.disabled = true;
+            btnPublier.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Envoi de l'image...`;
+
+            // Préparation de l'envoi de l'image (FormData)
+            const formData = new FormData();
+            formData.append("image", imageFile);
+
+            // Étape A : Téléversement vers l'API ImgBB
+            fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Erreur lors de la communication avec l'hébergeur d'images.");
+                }
+                return response.json();
+            })
+            .then(resData => {
+                if (resData.success) {
+                    // L'URL de l'image renvoyée par ImgBB
+                    const imageUrl = resData.data.url;
+
+                    btnPublier.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Publication sur FAY-BeninMARKET...`;
+
+                    // Étape B : Enregistrement de l'article sur Firebase avec l'URL ImgBB
+                    const data = {
+                        nom: document.getElementById('prod-name').value,
+                        prix: document.getElementById('prod-price').value,
+                        categorie: document.getElementById('prod-category').value,
+                        image: imageUrl, // URL finale hébergée
+                        description: document.getElementById('prod-desc').value,
+                        whatsapp: document.getElementById('prod-whatsapp').value,
+                        vendeurId: auth.currentUser.uid
+                    };
+
+                    return database.ref('produits').push(data);
+                } else {
+                    throw new Error("L'hébergement de l'image a échoué.");
+                }
+            })
+            .then(() => {
+                alert("🎉 Excellent ! Votre article est en ligne avec sa photo !");
+                addProductForm.reset();
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Une erreur est survenue : " + err.message);
+            })
+            .finally(() => {
+                // Réactivation du bouton
+                btnPublier.disabled = false;
+                btnPublier.innerHTML = `<i class="fas fa-check"></i> Publier l'article`;
+            });
+        });
+
+        // 4. Charger et afficher les produits en temps réel
+        function chargerProduitsVendeur() {
+            const currentUserId = auth.currentUser.uid;
+            
+            database.ref('produits').on('value', (snapshot) => {
+                productsContainer.innerHTML = '';
+                let count = 0;
+
+                snapshot.forEach((childSnapshot) => {
+                    const id = childSnapshot.key;
+                    const prod = childSnapshot.val();
+
+                    if (prod.vendeurId === currentUserId) {
+                        count++;
+                        const itemHTML = `
+                            <div class="product-item">
+                                <div class="product-info">
+                                    <h4>${prod.nom}</h4>
+                                    <span>${prod.prix} FCFA</span> — <small>${prod.categorie}</small>
+                                </div>
+                                <button class="btn-delete" onclick="supprimerProduit('${id}')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        `;
+                        productsContainer.insertAdjacentHTML('beforeend', itemHTML);
+                    }
+                });
+
+                if (count === 0) {
+                    productsContainer.innerHTML = `<p style="color: var(--text-light); text-align: center;">Aucun article en ligne pour le moment.</p>`;
+                }
+            });
+        }
+
+        // 5. Fonction de suppression
+        window.supprimerProduit = function(id) {
+            if (confirm("Voulez-vous vraiment retirer cet article de la vente ?")) {
+                database.ref('produits').child(id).remove()
+                    .then(() => {
+                        alert("L'article a été retiré de la boutique.");
+                    })
+                    .catch(err => alert("Erreur de suppression : " + err.message));
+            }
+        };
+    </script>
+</body>
+</html>

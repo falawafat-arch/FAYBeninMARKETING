@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAY-BeninMARKET | Connexion Vendeur</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0b4ea2;
+            --primary-hover: #083b7c;
+            --secondary: #2ecc71; /* Vert allumé */
+            --bg-gradient: linear-gradient(180deg, #ffffff 0%, #f0f7ff 100%);
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --white: #ffffff;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background: var(--white);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(11, 78, 162, 0.08);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .auth-logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .auth-subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        /* Onglets pour basculer entre Connexion et Inscription */
+        .auth-tabs {
+            display: flex;
+            background: #f1f5f9;
+            padding: 5px;
+            border-radius: 30px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: none;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 30px;
+            transition: var(--transition);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Formulaire */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border-radius: 30px;
+            border: 2px solid #e2e8f0;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--secondary); /* Vert allumé au focus */
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.15);
+        }
+
+        .btn-auth {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--primary) 0%, #1e3a8a 100%);
+            color: var(--white);
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(11, 78, 162, 0.2);
+            margin-top: 10px;
+        }
+
+        .btn-auth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.3); /* Lueur verte */
+            background: linear-gradient(135deg, var(--secondary) 0%, #27ae60 100%); /* Vert allumé au survol */
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+    </style>
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b4ea2">
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="auth-logo">FAY-BeninMARKET</div>
+        <p class="auth-subtitle" id="auth-desc">Accédez à votre espace pour vendre vos produits</p>
+
+        <!-- Onglets -->
+        <div class="auth-tabs">
+            <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Se connecter</button>
+            <button class="tab-btn" id="tab-register" onclick="switchTab('register')">S'inscrire</button>
+        </div>
+
+        <!-- Formulaire Unique -->
+        <form id="auth-form">
+            <div class="form-group">
+                <label>Adresse E-mail</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="exemple@domaine.com" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Minimum 6 caractères" minlength="6" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-auth" id="btn-submit">Se connecter</button>
+        </form>
+
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a>
+    </div>
+
+    <!-- SDK Firebase de base et d'authentification -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+    <script>
+        // Ta configuration Firebase (la même que l'accueil et le dashboard)
+        const firebaseConfig = {
+           apiKey: "AIzaSyBgxEKac2BFnGp1zz8Df3yKhW656vepF_k",
+           authDomain: "fay-beninmarket.firebaseapp.com",
+           databaseURL: "https://fay-beninmarket-default-rtdb.europe-west1.firebasedatabase.app",
+           projectId: "fay-beninmarket",
+           storageBucket: "fay-beninmarket.firebasestorage.app",
+           messagingSenderId: "1015486006380",
+           appId: "1:1015486006380:web:9a611b70b258933a848449"
+        };
+  
+
+        // Initialisation
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        let currentMode = 'login'; // 'login' ou 'register'
+
+        // Fonction pour changer d'onglet
+        function switchTab(mode) {
+            currentMode = mode;
+            const tabLogin = document.getElementById('tab-login');
+            const tabRegister = document.getElementById('tab-register');
+            const btnSubmit = document.getElementById('btn-submit');
+            const desc = document.getElementById('auth-desc');
+
+            if (mode === 'login') {
+                tabLogin.classList.add('active');
+                tabRegister.classList.remove('active');
+                btnSubmit.textContent = "Se connecter";
+                desc.textContent = "Accédez à votre espace pour vendre vos produits";
+            } else {
+                tabRegister.classList.add('active');
+                tabLogin.classList.remove('active');
+                btnSubmit.textContent = "Créer mon compte";
+                desc.textContent = "Rejoignez la communauté des vendeurs du Bénin";
+            }
+        }
+
+        // Gestion de la soumission (Inscription ou Connexion)
+        document.getElementById('auth-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (currentMode === 'login') {
+                // CONNEXION
+                auth.signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        window.location.href = 'dashboard-vendeur.html'; // Redirige vers le dashboard
+                    })
+                    .catch((error) => {
+                        alert("Erreur de connexion : " + error.message);
+                    });
+            } else {
+                // INSCRIPTION
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        alert("Compte créé avec succès ! Bienvenue.");
+                        window.location.href = 'dashboard-vendeur.html';
+                    })
+                    .catch((error) => {
+                        alert("Erreur d'inscription : " + error.message);
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
