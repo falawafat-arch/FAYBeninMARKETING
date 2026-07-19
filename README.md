@@ -3,7 +3,7 @@
 ## 📌 Présentation du Projet
 FAY Benin Market est une application de place de marché (marketplace) digitale conçue pour moderniser le commerce local au Bénin. Elle permet de connecter efficacement les vendeurs, artisans et commerçants béninois avec les consommateurs, offrant une vitrine numérique accessible et intuitive pour booster l'économie de proximité.
 
-## 🇧🇯 Problématique Ciblée au Bénin
+## Problématique Ciblée au Bénin
 Dans le contexte béninois, de nombreux petits commerçants et producteurs locaux dépendent entièrement du commerce physique et manquent de visibilité en ligne pour toucher une clientèle plus large. FAY Benin Market répond à ce défi en digitalisant les échanges, en réduisant les intermédiaires et en offrant une solution technologique adaptée aux habitudes de consommation locales.
 
 ## 📈 Stratégie Marketing & Vision Commerciale
